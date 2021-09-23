@@ -15,7 +15,7 @@ some 1000 feet above Twin Creek Valley
 to an elevation of more than 7500 feet 
 above sea level. The butte is located just 
 north of US 30N and the Union Pacific Railroad, 
-which traverse the valley. ''',
+which traverse the valley. .''',
 
 '''At the base of Fossil Butte are the bright 
 red, purple, yellow and gray beds of the Wasatch 
@@ -62,7 +62,7 @@ print(separator)
 selection = input(f"Enter number btw. 1 and {len(TEXTS)} to select:")
 print(separator)
 
-if not selection.isdigit() or not int(selection) > len(TEXTS) and not int(selection) == 0:
+if selection.isdigit() and not int(selection) > len(TEXTS) and not int(selection) == 0:
     #OK -> change type to int
     selection = int(selection)
 else:
@@ -71,11 +71,25 @@ else:
     print(separator)
     exit()
 
-#Get the selected text from TEXTS
-selected_text = TEXTS[(selection)-1]
+#Get the selected text from TEXTS and split it into separate strings
+#No leading spaces
+split_selected = TEXTS[(selection)-1].strip().split()
 
-#Declare and get sum values from selected text
-split_selected = selected_text.split()
+#Delete unwanted symbols
+unwanted_chars = ".,'!?&#^|-@();€$:<>+-%´ˇ[]/¨" + '"'
+
+for index in range(len(split_selected)):
+    for char in unwanted_chars:
+        split_selected[index] = split_selected[index].replace(char,"")
+
+#Get rid of all None strings
+split_selected = list(filter(None, split_selected))
+
+#Create dictionary with keys based on longest word length 
+occurencies = dict.fromkeys(range(1,len(max(split_selected, key=len))+1),0)
+
+#Declare and get sum values from selected text 
+#And their occurency sums
 words_count = len(split_selected)
 title_count = 0
 upper_count = 0
@@ -93,8 +107,11 @@ for word in split_selected:
     elif word.isnumeric():
         numeric_count += 1
         numeric_sum += int(word)
-
-#Print values
+    #Get words occurencies sums
+    length_index = len(word)
+    occurencies[length_index] = occurencies[length_index] + 1 
+    
+#Print values 
 print("There are",words_count,"words in the selected text.")
 print("There are",title_count,"titlecase words.")
 print("There are",upper_count,"uppercase words.")
@@ -103,22 +120,11 @@ print("There are",numeric_count,"numeric strings.")
 print("The sum of all the numbers:",numeric_sum)
 
 
-
-#Delete unwanted symbols from words
-for index in range(len(split_selected)):
-    split_selected[index] = split_selected[index].replace(".","").replace(",","")
-
-#Create dictionary with keys based on longest word length 
-occurencies = dict.fromkeys(range(1,len(max(split_selected, key=len))+1),0)
-
-#Get words occurencies sums
-for word in split_selected:
-    length_index = len(word)
-    occurencies[length_index] = occurencies[length_index] + 1 
+#Visualization of word length occurencies section
 
 #Declare variables for graph
-graph_header_middle = "OCCURENCES"
 graph_header_start = "LEN"
+graph_header_middle = "OCCURENCES"
 graph_header_end = "NR."
 graph_start_count = len("LEN")
 graph_middle_count = len(graph_header_middle)
