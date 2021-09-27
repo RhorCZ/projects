@@ -69,7 +69,6 @@ else:
     exit()
 
 #Get the selected text from TEXTS and split it into separate strings
-#No leading spaces
 split_selected = TEXTS[(selection)-1].strip().split()
 
 #Delete unwanted symbols
