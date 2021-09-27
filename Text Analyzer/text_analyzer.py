@@ -43,10 +43,7 @@ username = input("Username:")
 password = input("Password:")
 
 #Check given credentials
-if username in users and users[username] == password:
-    print(separator)
-else:
-    #Wrong credentials - warn user & exit
+if users.get(username) != password:
     print(separator)
     print("Wrong username or password!")
     print("Closing...")
