@@ -15,7 +15,7 @@ some 1000 feet above Twin Creek Valley
 to an elevation of more than 7500 feet 
 above sea level. The butte is located just 
 north of US 30N and the Union Pacific Railroad, 
-which traverse the valley. .''',
+which traverse the valley.''',
 
 '''At the base of Fossil Butte are the bright 
 red, purple, yellow and gray beds of the Wasatch 
