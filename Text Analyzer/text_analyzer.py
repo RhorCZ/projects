@@ -51,6 +51,7 @@ if users.get(username) != password:
     exit()
 
 #If all OK proceed
+print(separator)
 print("Welcome to the app, " + username)
 print(f"We have {len(TEXTS)} texts to be analyzed.")
 print(separator)
@@ -122,31 +123,20 @@ print("The sum of all the numbers:",numeric_sum)
 graph_header_start = "LEN"
 graph_header_middle = "OCCURENCES"
 graph_header_end = "NR."
-graph_start_count = len("LEN")
-graph_middle_count = len(graph_header_middle)
 
 #Adjust the middle part of graph header accordingly to the longest sum of occurencies
 max_occurencies = max(occurencies.values())
 
-if graph_middle_count < max_occurencies:
-    #+2 for additional spaces
-    count = max_occurencies - graph_middle_count + 2
-    if not count % 2 == 0:
-        count += 1
-    graph_header_middle = f"{ ' ' * int(count/2) }OCCURENCES{ ' ' * int(count/2) }"
-    graph_middle_count = len(graph_header_middle)
-
 #Print graph header
 print(separator)
-print(graph_header_start,graph_header_middle, graph_header_end, sep="|")
+print("{0:<3}|{1:{align}{width}}|{2:<3}".format(graph_header_start,graph_header_middle,graph_header_end,align='^', width=max_occurencies))
 print(separator)
 
     
 #Print occurencis as graph
 for key, value in occurencies.items():
-    start_space = graph_start_count - len(str(key))
-    middle_space = graph_middle_count - value
-    print(f"{ ' ' * start_space }{key}|{ '*' * value }{ ' ' * middle_space }|{value}")
+    count = '*' * value
+    print("{0:>3}|{1:{align}{width}}|{2:<3}".format(key, count,value,align='<', width=max_occurencies))
 
 #END
 print(separator)
