@@ -133,7 +133,7 @@ print("{0:<3}|{1:{align}{width}}|{2:<3}".format(graph_header_start,graph_header_
 print(separator)
 
     
-#Print occurencis as graph
+#Print occurencis as graph 
 for key, value in occurencies.items():
     count = '*' * value
     print("{0:>3}|{1:{align}{width}}|{2:<3}".format(key, count,value,align='<', width=max_occurencies))
