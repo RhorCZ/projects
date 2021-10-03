@@ -138,5 +138,5 @@ for key, value in occurencies.items():
     count = '*' * value
     print("{0:>3}|{1:{align}{width}}|{2:<3}".format(key, count,value,align='<', width=max_occurencies))
 
-#END 
+#END
 print(separator)
