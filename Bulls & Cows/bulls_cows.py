@@ -92,7 +92,7 @@ def get_score(tries):
 def save_to_file(filename,took_time, tries, score):
     with open(filename, "a+") as file:
         now = datetime.now().strftime("[%d.%m.%Y %H:%M:%S]")
-        file.write(f"{now} Duration: {took_time} Tries: {tries} Score: {score}")
+        file.write(f"{now} Number: {RANDOM_NUMBER} Tries: {tries} Duration: {took_time} Score: {score}")
         file.close()
 
 #End game results
