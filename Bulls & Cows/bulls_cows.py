@@ -1,6 +1,6 @@
 import random
 import time
-from datetime import datetime, timedelta, date
+from datetime import datetime
 import os
 import sys
 
@@ -108,7 +108,7 @@ def end_of_game(tries):
     print(f"Correct, you've guessed the right number\nin {tries} {guess_word}.")
     print(f"It took you: {took_time}")
     print(SEPARATOR)
-    
+
     print(f"That's {score}.")
     print(SEPARATOR)
 
