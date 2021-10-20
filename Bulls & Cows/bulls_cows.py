@@ -35,13 +35,13 @@ def handle_input(user_input):
 
 #Get bulls
 def get_bulls(input_list):
-    used = list()
+    used = dict()
     bulls = 0
     for index in range(len(input_list)):
             num = input_list[index]
             if num in RANDOM_NUMBER:
                 if num == RANDOM_NUMBER_TUPLE[index]:
-                    used.append(num)
+                    used[index] = num
                     bulls += 1
     return bulls, used
 
@@ -49,11 +49,12 @@ def get_bulls(input_list):
 def get_cows(input_list, used):
     cows = 0
     for index in range(len(input_list)):
+        if not index in used.keys():
             num = input_list[index]
             repeats = RANDOM_NUMBER.count(num)
             if num in RANDOM_NUMBER:
-                if repeats != used.count(num):
-                    used.append(num)
+                if repeats != sum([1 for i in used.values() if i == num]):
+                    used[index] = num
                     cows += 1
     return cows
 
@@ -92,7 +93,7 @@ def get_score(tries):
 def save_to_file(filename,took_time, tries, score):
     with open(filename, "a+") as file:
         now = datetime.now().strftime("[%d.%m.%Y %H:%M:%S]")
-        file.write(f"{now} Number: {RANDOM_NUMBER} Tries: {tries} Duration: {took_time} Score: {score}")
+        file.write(f"{now} Number: {RANDOM_NUMBER} Tries: {tries} Score: {score} Duration: {took_time} \n")
         file.close()
 
 #End game results
