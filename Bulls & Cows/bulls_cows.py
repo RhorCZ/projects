@@ -63,8 +63,7 @@ def input_result(bulls,cows):
     if cows == 1:
         cow_word = "cow"
 
-    print(f"{bulls} {bull_word}, {cows} {cow_word}")
-    print(SEPARATOR)
+    return f"{bulls} {bull_word}, {cows} {cow_word}"
 
 #Get time
 def get_time():
@@ -127,7 +126,8 @@ def main():
             break
 
         bulls, cows = handle_input(user_input)
-        input_result(bulls,cows)
+        print(input_result(bulls,cows))
+        print(SEPARATOR)
 
 if __name__ == '__main__':
     main()
