@@ -38,8 +38,7 @@ def check_duplicates(user_input):
 def handle_input(user_input):
     input_list = tuple(user_input) 
     bulls, cows = get_cows_bulls(input_list)
-
-    input_result(bulls, cows)
+    return bulls,cows
 
 #Get bulls and cows
 def get_cows_bulls(input_list):
@@ -87,16 +86,16 @@ def get_score(tries):
 
 #Save results to file
 def save_to_file(filename,took_time, tries, score):
+    print("Writing game stats to file...")
     with open(filename, "a+") as file:
         now = datetime.now().strftime("[%d.%m.%Y %H:%M:%S]")
         file.write(f"{now} Number: {RANDOM_NUMBER} Tries: {tries} Score: {score} Duration: {took_time} \n")
         file.close()
+    print("Done..")
 
 #End game results
-def end_of_game(tries):
+def print_game_results(score, tries, took_time):
     guess_word = "guesses"
-    score = get_score(tries)
-    took_time = get_time()
 
     if tries == 1:
         guess_word = "guess"
@@ -108,10 +107,6 @@ def end_of_game(tries):
 
     print(f"That's {score}.")
     print(SEPARATOR)
-
-    print("Writing game stats to file...")
-    save_to_file(os.path.join(SCRIPT_PATH,"bulls_cows_stats.txt"),took_time,tries,score)
-    print("Done")
 
 #Start the game
 def main():
@@ -125,10 +120,14 @@ def main():
             continue
 
         if user_input == RANDOM_NUMBER:
-            end_of_game(tries)
+            score = get_score(tries)
+            took_time = get_time()
+            print_game_results(score, tries, took_time)            
+            save_to_file(os.path.join(SCRIPT_PATH,"bulls_cows_stats.txt"),took_time,tries,score)
             break
 
-        handle_input(user_input)
+        bulls, cows = handle_input(user_input)
+        input_result(bulls,cows)
 
 if __name__ == '__main__':
     main()
