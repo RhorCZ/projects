@@ -6,7 +6,7 @@ import sys
 
 #Values
 SEPARATOR = "-----------------------------------------------"
-RANDOM_NUMBER = str(random.randint(1000,9999))
+RANDOM_NUMBER = "".join(str(e) for e in random.sample(range(1,10),4))
 RANDOM_NUMBER_TUPLE = tuple(RANDOM_NUMBER)
 START_TIME = time.time()
 SCRIPT_PATH = os.path.dirname(os.path.realpath(sys.argv[0]))
@@ -20,43 +20,39 @@ def welcome_user():
 
 #Check given input
 def is_correct_input(user_input):
-    if not user_input.isdigit() or len(user_input) != 4:
-            print("Wrong input!")
+    if (check_duplicates(user_input) == True or not user_input.isdigit() or
+       len(user_input) != 4 or user_input[0] == "0" ):
+            print("\nWrong input!\n\nNumber must have 4 unique digits \nand can not start with 0!")
             print(SEPARATOR)
             return False
+
+#Check for duplicatu numbers
+def check_duplicates(user_input):
+    for char in user_input:
+        counts = user_input.count(char)
+        if counts > 1:
+            return True
+    return False
 
 #Handle user's input
 def handle_input(user_input):
     input_list = tuple(user_input) 
-    bulls, used_list = get_bulls(input_list)
-    cows = get_cows(input_list, used_list)
+    bulls, cows = get_cows_bulls(input_list)
 
     input_result(bulls, cows)
 
-#Get bulls
-def get_bulls(input_list):
-    used = dict()
+#Get bulls and cows
+def get_cows_bulls(input_list):
     bulls = 0
+    cows = 0
     for index in range(len(input_list)):
             num = input_list[index]
             if num in RANDOM_NUMBER:
                 if num == RANDOM_NUMBER_TUPLE[index]:
-                    used[index] = num
                     bulls += 1
-    return bulls, used
-
-#Get cows
-def get_cows(input_list, used):
-    cows = 0
-    for index in range(len(input_list)):
-        if not index in used.keys():
-            num = input_list[index]
-            repeats = RANDOM_NUMBER.count(num)
-            if num in RANDOM_NUMBER:
-                if repeats != sum([1 for i in used.values() if i == num]):
-                    used[index] = num
+                else:
                     cows += 1
-    return cows
+    return bulls, cows
 
 #Print result of user's input
 def input_result(bulls,cows):
@@ -118,8 +114,9 @@ def end_of_game(tries):
     print("Done")
 
 #Start the game
-def start_game():
+def main():
     welcome_user()
+    print(RANDOM_NUMBER)
     tries = 0
     while True:
         user_input = input("Enter number:")
@@ -134,8 +131,5 @@ def start_game():
 
         handle_input(user_input)
 
-
-def main():
-    start_game()
-
-main()
+if __name__ == '__main__':
+    main()
