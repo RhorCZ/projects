@@ -116,7 +116,6 @@ def end_of_game(tries):
 #Start the game
 def main():
     welcome_user()
-    print(RANDOM_NUMBER)
     tries = 0
     while True:
         user_input = input("Enter number:")
