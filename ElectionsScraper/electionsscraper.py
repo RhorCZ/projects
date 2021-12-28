@@ -5,6 +5,7 @@ import os
 from typing import Union
 from bs4 import BeautifulSoup
 
+
 def get_arguments():
     # Make sure that filename is original
     def process_filename(filename: str) -> str:
@@ -13,11 +14,11 @@ def get_arguments():
         original_filename = file
         index = 1
         while True:
-            if os.path.exists(os.path.join(path,file)):
+            if os.path.exists(os.path.join(path, file)):
                 # Rename
-                file = original_filename.split(".")[0] + "("+ str(index) +")" + ".csv"
+                file = original_filename.split(".")[0] + "(" + str(index) + ")" + ".csv"
                 index += 1
-                new_filename = os.path.join(path,file)
+                new_filename = os.path.join(path, file)
             else:
                 break
         return new_filename
@@ -25,7 +26,7 @@ def get_arguments():
     try:
         if not len(sys.argv) == 3:
             raise Exception("Wrong number of arguments! Expected two of them!")
-        elif not "https://volby.cz/pls/ps" in sys.argv[1]:
+        elif "https://volby.cz/pls/ps" not in sys.argv[1]:
             raise Exception("Invalid URL!")
         elif len(sys.argv[2]) <= 4 or not sys.argv[2].endswith(".csv"):
             raise Exception("Invalid filename!")
@@ -34,6 +35,7 @@ def get_arguments():
         print(ex)
         print('Example: python electionsscraper.py "elections-url" "filename.csv"')
         exit(0)
+
 
 def get_villages(url: str) -> dict():
     try:
@@ -62,8 +64,8 @@ def get_villages(url: str) -> dict():
                 elif len(columns) == 4:
                     add_village(columns[0].text, columns[1].text, columns[2].find('a'))
 
-        if(village_dict is None):
-           raise Exception("Failed to get villages from URL!")
+        if village_dict is None:
+            raise Exception("Failed to get villages from URL!")
 
         return village_dict
 
@@ -71,7 +73,8 @@ def get_villages(url: str) -> dict():
         print(ex)
         exit(0)
 
-def get_election_data(villages: dict, header: list) -> Union[list,list]:
+
+def get_election_data(villages: dict, header: list) -> Union[list, list]:
     csv_rows = list()
     csv_header = header
 
@@ -114,7 +117,7 @@ def get_election_data(villages: dict, header: list) -> Union[list,list]:
 
     for key, value in villages.items():
         try:
-            row = [key,villages[key]["name"]]
+            row = [key, villages[key]["name"]]
             page = requests.get(villages[key]["link"])
             soup = BeautifulSoup(page.text, "html.parser")
             tables = soup.find_all("table")
@@ -128,7 +131,7 @@ def get_election_data(villages: dict, header: list) -> Union[list,list]:
             elif len(tables) == 2:
                 main_table = tables[1].find_all("tr")
             else:
-                raise Exception("Failed to retrieve data from",villages[key]["link"])
+                raise Exception("Failed to retrieve data from", villages[key]["link"])
 
             row += process_header_table(header_table)
             results_row, candidates = process_main_table(main_table)
@@ -141,7 +144,8 @@ def get_election_data(villages: dict, header: list) -> Union[list,list]:
         except Exception as ex:
             print(ex)
 
-    return csv_rows,csv_header
+    return csv_rows, csv_header
+
 
 def write_csv(file: str, header: list, rows: list):
     try:
@@ -150,16 +154,18 @@ def write_csv(file: str, header: list, rows: list):
             writer.writerow(header)
             writer.writerows(rows)
     except:
-        print("Error occured:\n",sys.exc_info()[0])
+        print("Error occured:\n", sys.exc_info()[0])
         exit(0)
+
 
 def main():
     url, file = get_arguments()
     villages = get_villages(url)
-    initial_header = ["Kod obce","Nazev obce","Volici v seznamu","Vydane obalky","Platne hlasy"]
-    csv_rows, csv_header = get_election_data(villages,initial_header)
+    initial_header = ["Kod obce", "Nazev obce", "Volici v seznamu", "Vydane obalky", "Platne hlasy"]
+    csv_rows, csv_header = get_election_data(villages, initial_header)
     write_csv(file, csv_header, csv_rows)
     print("Done")
+
 
 if __name__ == "__main__":
     main()
