@@ -60,11 +60,20 @@ def get_villages(url: str) -> dict():
             if len(columns) >= 3:
                 # Get correct link from new/old elections tables
                 if len(columns) == 3 or len(columns) == 7:
-                    add_village(columns[0].text.strip(), columns[1].text.strip(), columns[0].find('a'))
+                    col_num = columns[0].text.strip()
+                    col_name = columns[1].text.strip()
+                    col_link = columns[0].find('a')
+                    add_village(col_num, col_name, col_link)
                     if len(columns) == 7:
-                        add_village(columns[4].text.strip(), columns[5].text.strip(), columns[4].find('a'))
+                        col_num = columns[4].text.strip()
+                        col_name = columns[5].text.strip()
+                        col_link = columns[4].find('a')
+                        add_village(col_num, col_name, col_link)
                 else:
-                    add_village(columns[0].text.strip(), columns[1].text.strip(), columns[2].find('a'))
+                    col_num = columns[0].text.strip()
+                    col_name = columns[1].text.strip()
+                    col_link = columns[2].find('a')
+                    add_village(col_num, col_name, col_link)
 
         if village_dict is None:
             raise Exception("Failed to get villages from URL!")
